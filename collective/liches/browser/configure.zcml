@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="collective.liches">
+
+
+  <browser:page
+      for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
+      name="linkchecker-startpage.html"
+      class=".views.StartPageView"
+      allowed_interface=".views.IStartPageView"
+      permission="zope.Public"
+      />
+
+    <browser:page
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        name="liches-settings.html"
+        class=".settings.LichesSettings"
+        permission="cmf.ManagePortal" />
+
+
+</configure>
