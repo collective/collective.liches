@@ -4,7 +4,7 @@
     <h1>Linkchecker start page</h1>
     <p> use this page as a starting point for a linkchecker e.g:
         <pre>
-linkchecker --recursion-level=2 --file-output=html --no-warnings <b tal:replace="string:${here/absolute_url}/@@${view/__name__}" />
+linkchecker --recursion-level=2 --file-output=csv --pause=3 --no-warnings <b tal:replace="string:${here/absolute_url}/@@${view/__name__}" />
         </pre>
     </p>
     <dl tal:define="site_properties context/portal_properties/site_properties;

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from zope import interface, schema
 from plone.theme.interfaces import IDefaultPloneLayer
-from collective.liches import lichesStartPageMessageFactory as _
+from collective.liches import lichesMessageFactory as _
 
 class ILichesLayer(IDefaultPloneLayer):
     """Marker interface that defines a Zope 3 browser layer.

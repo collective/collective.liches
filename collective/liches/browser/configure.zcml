@@ -5,7 +5,7 @@
     i18n_domain="collective.liches">
 
 
-  <browser:page
+    <browser:page
       for="Products.CMFPlone.interfaces.siteroot.IPloneSiteRoot"
       name="linkchecker-startpage.html"
       class=".views.StartPageView"
@@ -19,5 +19,13 @@
         class=".settings.LichesSettings"
         permission="cmf.ManagePortal" />
 
+    <browser:page
+      for="*"
+      name="linkchecker-brokenpages.html"
+      class=".views.BrokenPagesView"
+      template="brokenpages.pt"
+      allowed_interface=".views.IBrokenPagesView"
+      permission="zope.Public"
+      />
 
 </configure>

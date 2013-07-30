@@ -9,11 +9,11 @@ class LichesSettings(controlpanel.RegistryEditForm):
     description = _(u'LinkChecker start page  Settings')
 
     def updateFields(self):
-        super(LcStartPageSettings, self).updateFields()
+        super(LichesSettings, self).updateFields()
 
 
     def updateWidgets(self):
-        super(LcStartPageSettings, self).updateWidgets()
+        super(LichesSettings, self).updateWidgets()
 
 
 class LichesSettingsSchemaControlPanel(controlpanel.ControlPanelFormWrapper):

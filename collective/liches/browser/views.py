@@ -1,4 +1,13 @@
 # -*- coding: utf-8 -*-
+import urllib, urllib2
+import logging
+try:
+    import simplejson as json
+    from simplejson.decoder import JSONDecodeError
+except ImportError:
+    import json
+    JSONDecodeError = ValueError
+
 from zope.interface import implements, Interface
 from zope.component import getUtility
 
@@ -12,6 +21,7 @@ from plone.registry.interfaces import IRegistry
 from collective.liches import lichesMessageFactory as _
 from collective.liches.interfaces import ILichesSettingsSchema
 
+logger = logging.getLogger('collective.liches')
 
 class IStartPageView(Interface):
     """
@@ -66,15 +76,15 @@ class BrokenPagesView(BrowserView):
         self.server_url = settings.liches_server
 
     def get_links(self):
-        url = self.context.absolute_url()
-        if self.server_url.endswth('/'):
-            service_url = "%sgetpages?url=%s&format=json" %(self.server_url, url)
+        url = urllib.urlencode({"url": self.context.absolute_url()})
+        if self.server_url.endswith('/'):
+            service_url = "%sgetpages?%s&format=json" %(self.server_url, url)
         else:
-            service_url = "%s/getpages?url=%s&format=json" %(self.server_url, url)
+            service_url = "%s/getpages?%s&format=json" %(self.server_url, url)
         try:
-            data = json.load(urllib.urlopen(serviceurl))
-        except HttpError:
-            return []
-        return data['urls']
+            data = json.load(urllib2.urlopen(service_url))
+        except urllib2.HTTPError:
+            return {'num': 'unknown', 'name': 'Error connecting to linkchecker server', 'urls': []}
+        return data
 
 
