@@ -28,4 +28,13 @@
       permission="zope.Public"
       />
 
+    <browser:viewlet
+      name="liches.brokenlinks"
+      manager="plone.app.layout.viewlets.interfaces.IBelowContentTitle"
+      template="brokenlinks.pt"
+      class=".viewlets.BrokenLinksViewlet"
+      layer="collective.liches.interfaces.ILichesLayer"
+      permission="cmf.ModifyPortalContent"
+      />
+
 </configure>

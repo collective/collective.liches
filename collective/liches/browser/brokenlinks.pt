@@ -1,0 +1,12 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="collective.liches"
+      tal:omit-tag="">
+
+  <div tal:define="results view/get_broken_links" tal:condition="results/urls">
+      <h3><span tal:replace="results/num" /> known problems in page <span tal:replace="results/name" /></h3>
+  </div>
+</html>
+
