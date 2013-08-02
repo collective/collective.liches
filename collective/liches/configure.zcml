@@ -11,11 +11,14 @@
 
   <genericsetup:registerProfile
       name="default"
-      title="collective.liches"
+      title="Liches Linkchecker"
       directory="profiles/default"
       description="Installs the collective.liches package"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
   <!-- -*- extra stuff goes here -*- -->
+
+  <include package=".portlets" />
+
 
 </configure>

@@ -10,15 +10,12 @@ class BrokenLinksViewlet(base.ViewletBase):
 
     def get_js(self):
         template = """
-/*<![CDATA[*/
-$(document).ready(function() {
-    var url =  '%s/@@liches-ajax-insert.html';
-    jQuery.get(url,
-        function(data) {
-            $('#liches-container').html(data);
-    });
-});/*]]>*/
-
-        """
-
+        /*<![CDATA[*/
+        $(document).ready(function() {
+            var url =  '%s/@@liches-ajax-insert.html';
+            jQuery.get(url,
+                function(data) {
+                    $('#liches-container').html(data);
+            });
+        });/*]]>*/"""
         return template % self.context.absolute_url()

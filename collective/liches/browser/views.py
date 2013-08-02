@@ -89,6 +89,8 @@ class BrokenPagesView(BrowserView):
 
 class BrokenLinksView(BrowserView):
 
+    template = ViewPageTemplateFile('brokenlinks.pt')
+
     def __init__(self, context, request):
         self.context = context
         self.request = request
@@ -118,3 +120,7 @@ class BrokenLinksView(BrowserView):
         for url in self.data['urls']:
             mark_urls.append("""$("a[href='%s']").addClass('broken-link');""" % url['urlname'])
         return ready_template % ' '.join(mark_urls)
+
+    def __call__(self):
+        self.request.response.setHeader('X-Theme-Disabled', 'True')
+        return self.template()
