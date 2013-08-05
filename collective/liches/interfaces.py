@@ -24,3 +24,9 @@ class ILichesSettingsSchema(interface.Interface):
         required = True,
         default = u'http://localhost:6543',
     )
+
+    secret_key = schema.TextLine(
+        title = _(u'Secret Key'),
+        description = _(u'Key to authegit add nticate to the liches server'),
+        required = True,
+    )

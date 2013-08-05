@@ -16,6 +16,10 @@
       <script type="text/javascript" tal:content="structure view/mark_broken_links">
           //js to mark all broken links
       </script>
+      <form action="call-linkchecker.html"
+        tal:attributes="action string:${results/name}/@@call-linkchecker.html">
+      <input type="submit" name="checklinks" value="Check links">
+      </form>
   </div>
 </html>
 

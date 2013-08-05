@@ -7,7 +7,7 @@
     i18n_domain="collective.liches">
 
   <five:registerPackage package="." initialize=".initialize" />
-  <include package=".browser" />
+
 
   <genericsetup:registerProfile
       name="default"
@@ -16,9 +16,28 @@
       description="Installs the collective.liches package"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
+
+  <genericsetup:upgradeStep
+      title="Install portlet"
+      description="Install portlet"
+      source="*"
+      destination="1002"
+      handler="collective.liches.setuphandlers.add_portlet"
+      profile="collective.liches:default" />
+
+
+  <genericsetup:upgradeStep
+      title="Update registry"
+      description="Upgrade registry with new values"
+      source="*"
+      destination="1002"
+      handler="collective.liches.setuphandlers.upgrade_registry"
+      profile="collective.liches:default" />
+
   <!-- -*- extra stuff goes here -*- -->
 
   <include package=".portlets" />
+  <include package=".browser" />
 
 
 </configure>

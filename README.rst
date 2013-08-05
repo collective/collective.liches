@@ -29,6 +29,8 @@ The short version is:
 
 Add ``collective.liches`` to the list of eggs to install, e.g.
 
+::
+
     [buildout]
     ...
     eggs =
@@ -36,6 +38,8 @@ Add ``collective.liches`` to the list of eggs to install, e.g.
         collective.liches
 
 Re-run buildout, e.g. with
+
+::
 
     $ ./bin/buildout
 

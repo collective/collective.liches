@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import urllib, urllib2
+import hashlib
 import logging
 try:
     import simplejson as json
@@ -7,6 +7,8 @@ try:
 except ImportError:
     import json
     JSONDecodeError = ValueError
+import time
+import urllib, urllib2
 
 from zope.interface import implements, Interface
 from zope.component import getUtility
@@ -15,6 +17,7 @@ from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from Products.CMFCore.utils import getToolByName
+from Products.statusmessages.interfaces import IStatusMessage
 
 from plone.registry.interfaces import IRegistry
 
@@ -124,3 +127,37 @@ class BrokenLinksView(BrowserView):
     def __call__(self):
         self.request.response.setHeader('X-Theme-Disabled', 'True')
         return self.template()
+
+class LinkCheckPageView(BrowserView):
+
+    secret_key = None
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(ILichesSettingsSchema)
+        self.secret_key = settings.secret_key
+        self.server_url = settings.liches_server
+
+    def __call__(self):
+        url = self.context.absolute_url()
+        t = str(int(time.time()/100))
+        key = hashlib.md5(t + self.secret_key + url).hexdigest()
+        query = urllib.urlencode({"url": url, "key": key})
+        import ipdb; ipdb.set_trace()
+        if self.server_url.endswith('/'):
+            service_url = "%slinkcheckurl?%s&format=json" %(self.server_url, query)
+        else:
+            service_url = "%s/linkcheckurl?%s&format=json" % (self.server_url, query)
+        try:
+            data = json.load(urllib2.urlopen(service_url))
+            logger.info(str(data))
+            IStatusMessage(self.request).addStatusMessage(
+                _(u"Link check started"), "info")
+        except urllib2.HTTPError:
+            IStatusMessage(self.request).addStatusMessage(
+                _(u"Error communicating with Liches server"), "error")
+        self.request.response.redirect(url)
+        return u''
+
