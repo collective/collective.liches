@@ -5,6 +5,7 @@ Changelog
 -----------------
 
 - add portlet
+- add button to invoke linkchecker
 
 
 0.1dev (2013/07/31)

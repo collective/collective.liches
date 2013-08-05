@@ -2,7 +2,7 @@ Introduction
 ============
 Keeping the links in your site up to date is hard and unappreciated work.
 Content editors need all the help and incentive they can get to do
-this job. liches_ tries to make this task a bit easier.
+this job. Liches_ tries to make this task a bit easier.
 
 
 Installation
@@ -11,9 +11,9 @@ Installation
 Liches
 -------
 
-You have to install a liches_ linkchecker server for this product to work.
-please follow the liches_ installation instructions and make sure your
-liches_ server works before installing the plone product.
+You have to install a Liches_ linkchecker server for this product to work.
+please follow the Liches_ installation instructions and make sure your
+Liches_ server works before installing the plone product.
 
 
 Plone
@@ -50,9 +50,10 @@ section.
 Usage
 ======
 
-Configure the access to your liches Linkchecker serser and which content
+Configure the access to your Liches_ Linkchecker server and which content
 types will be displayed on your link checker start page in the plone
-control panel:
+control panel. The 'Secrect Key' is you Liches_ API Key and used to
+update existing pages in the Liches server
 
 .. image:: https://raw.github.com/collective/collective.liches/master/docs/liches-settings.png
 
@@ -65,15 +66,24 @@ Append `@@linkchecker-startpage.html` to your siteroot to view this page.
 
 .. image:: https://raw.github.com/collective/collective.liches/master/docs/linkchecker-startpage.png
 
+The Liches portlet gives an overview how many pages with broken links
+are present in the site or the current path.
+
+.. image:: https://raw.github.com/collective/collective.liches/master/docs/liches-portlet.png
+
+The links in the portlet take you to a page which gives you an overview
+of the pages with broken links in the site or current path. Alternatively
 append `@@linkchecker-brokenpages.html` to your site root or to any
-folder(ish object) in your site. This will show you a view with links
-to all pages with broken links in this path.
+folder(ish object) in your site.
 
 .. image:: https://raw.github.com/collective/collective.liches/master/docs/broken-pages-in-site.png
 
 All pages will show you (as long as you are able to edit it) which links
 are broken. At the top you see a summary of the links and the result
 of the linkcheck. Broken Links are highlighted and underlined in red.
+After you corrected the links you may want to recheck the links in this
+page. Press the 'Check Links' Button and wait for a few minutes for the
+linkchecker_ to finish.
 
 .. image:: https://raw.github.com/collective/collective.liches/master/docs/broken-links-in-page.png
 
@@ -98,7 +108,7 @@ Why yet another solution?
   to your needs e.g. to check the validity of HTLM and CSS.
 
 .. _linkchecker: http://wummel.github.io/linkchecker/
-.. _liches: https://github.com/cleder/liches
+.. _Liches: https://github.com/cleder/liches
 .. _gocept.lms: https://pypi.python.org/pypi/gocept.lms/
 .. _gocept.linkchecker: https://pypi.python.org/pypi/gocept.linkchecker/
 .. _collective.linkcheck: https://pypi.python.org/pypi/collective.linkcheck/

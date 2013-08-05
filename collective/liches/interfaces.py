@@ -27,6 +27,6 @@ class ILichesSettingsSchema(interface.Interface):
 
     secret_key = schema.TextLine(
         title = _(u'Secret Key'),
-        description = _(u'Key to authegit add nticate to the liches server'),
+        description = _(u'Key to authenticate to the liches server'),
         required = True,
     )
