@@ -80,7 +80,7 @@ class BrokenPagesView(BrowserView):
 
     def get_links(self):
         query = {"url": self.context.absolute_url(),
-                "code": self.request.form.get('code'),
+                "code": self.request.form.get('code', ''),
                 "format": "json"}
         url = urllib.urlencode(query)
         if self.server_url.endswith('/'):
