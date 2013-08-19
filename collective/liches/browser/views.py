@@ -79,11 +79,14 @@ class BrokenPagesView(BrowserView):
         self.server_url = settings.liches_server
 
     def get_links(self):
-        url = urllib.urlencode({"url": self.context.absolute_url()})
+        query = {"url": self.context.absolute_url(),
+                "code": self.request.form.get('code'),
+                "format": "json"}
+        url = urllib.urlencode(query)
         if self.server_url.endswith('/'):
-            service_url = "%sgetpages?%s&format=json" %(self.server_url, url)
+            service_url = "%sgetpages?%s" %(self.server_url, url)
         else:
-            service_url = "%s/getpages?%s&format=json" %(self.server_url, url)
+            service_url = "%s/getpages?%s" %(self.server_url, url)
         try:
             data = json.load(urllib2.urlopen(service_url))
         except urllib2.HTTPError:
@@ -100,6 +103,7 @@ class BrokenLinksView(BrowserView):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ILichesSettingsSchema)
         self.server_url = settings.liches_server
+        self.invalid_only = settings.invalid_only
         url = urllib.urlencode({"url": self.context.absolute_url()})
         if self.server_url.endswith('/'):
             service_url = "%scheckurl?%s&format=json" %(self.server_url, url)
@@ -110,8 +114,22 @@ class BrokenLinksView(BrowserView):
         except urllib2.HTTPError:
             self.data = {'num': 'unknown', 'name': 'Error connecting to linkchecker server', 'urls': []}
 
+
+    def filter_invalid(self):
+        if self.invalid_only:
+            urls = []
+            for url in self.data['urls']:
+                if str(url['valid']).lower() == 'false':
+                    urls.append(url)
+                else:
+                    continue
+            return {'num': len(urls), 'name': self.data['name'], 'urls': urls}
+        else:
+            return self.data
+
     def get_broken_links(self):
-        return self.data
+        data = self.filter_invalid()
+        return data
 
     def mark_broken_links(self):
         ready_template = """
@@ -120,7 +138,7 @@ class BrokenLinksView(BrowserView):
           %s
         });/*]]>*/ """
         mark_urls = []
-        for url in self.data['urls']:
+        for url in self.filter_invalid()['urls']:
             mark_urls.append("""$("a[href='%s']").addClass('broken-link');""" % url['urlname'])
         return ready_template % ' '.join(mark_urls)
 
@@ -145,7 +163,6 @@ class LinkCheckPageView(BrowserView):
         t = str(int(time.time()/100))
         key = hashlib.md5(t + self.secret_key + url).hexdigest()
         query = urllib.urlencode({"url": url, "key": key})
-        import ipdb; ipdb.set_trace()
         if self.server_url.endswith('/'):
             service_url = "%slinkcheckurl?%s&format=json" %(self.server_url, query)
         else:

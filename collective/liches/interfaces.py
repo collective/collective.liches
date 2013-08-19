@@ -30,3 +30,10 @@ class ILichesSettingsSchema(interface.Interface):
         description = _(u'Key to authenticate to the liches server'),
         required = True,
     )
+
+    invalid_only = schema.Bool(
+        title = _(u"Invalid only"),
+        description = _("Do not show valid links with warnings"),
+        required = False,
+        default = True,
+    )
