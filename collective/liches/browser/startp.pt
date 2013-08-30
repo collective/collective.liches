@@ -15,7 +15,6 @@ linkchecker --recursion-level=2 --file-output=csv --pause=3 --no-warnings <b tal
             result_type ob/portal_type;
             url python:result_url+'/view' if result_type in use_view_action else result_url">
             <a tal:attributes="href string:${ob/getURL}"
-
                 tal:content="ob/getURL">http://iwlearn.net/smthn</a>
         </dd>
         </tal:loop>

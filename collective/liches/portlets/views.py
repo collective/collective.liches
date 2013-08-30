@@ -38,13 +38,16 @@ class BrokenPagesView(BrowserView):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ILichesSettingsSchema)
         self.server_url = settings.liches_server
+        self.invalid_only = int(settings.invalid_only)
 
     def get_links(self):
-        url = urllib.urlencode({"url": self.context.absolute_url()})
+        query = urllib.urlencode({"url": self.context.absolute_url(),
+                "invalid": self.invalid_only,
+                "format": "json"})
         if self.server_url.endswith('/'):
-            service_url = "%sgetpages?%s&format=json" %(self.server_url, url)
+            service_url = "%sgetpages?%s" %(self.server_url, query)
         else:
-            service_url = "%s/getpages?%s&format=json" %(self.server_url, url)
+            service_url = "%s/getpages?%s" %(self.server_url, query)
         try:
             data = json.load(urllib2.urlopen(service_url))
         except urllib2.HTTPError:
