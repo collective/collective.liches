@@ -1,16 +1,7 @@
 # -*- coding: utf-8 -*-
-import hashlib
-import logging
-try:
-    import simplejson as json
-    from simplejson.decoder import JSONDecodeError
-except ImportError:
-    import json
-    JSONDecodeError = ValueError
-import time
-import urllib, urllib2
-
+from plone import api
 from zope.interface import implements, Interface
+from zope.interface import implementer
 from zope.component import getUtility
 
 from Products.Five import BrowserView
@@ -24,13 +15,22 @@ from plone.registry.interfaces import IRegistry
 from collective.liches import lichesMessageFactory as _
 from collective.liches.interfaces import ILichesSettingsSchema
 
+import hashlib
+import logging
+import requests
+import json
+import time
+import urllib
+import urllib2
+
+
 logger = logging.getLogger('collective.liches')
+
 
 class IStartPageView(Interface):
     """
     Public view interface
     """
-
 
 
 class StartPageView(BrowserView):
@@ -54,7 +54,7 @@ class StartPageView(BrowserView):
 
     @property
     def portal(self):
-        return getToolByName(self.context, 'portal_url').getPortalObject()
+        return api.portal.get()
 
     def get_links(self):
         brains = self.portal_catalog(portal_type=self.content_types)
@@ -64,11 +64,14 @@ class StartPageView(BrowserView):
         self.request.response.setHeader('X-Theme-Disabled', 'True')
         return self.template()
 
-class IBrokenPagesView(Interface):
-    """ Marker nterface """
 
+class IBrokenPagesView(Interface):
+    """ Marker interface """
+
+
+@implementer(IBrokenPagesView)
 class BrokenPagesView(BrowserView):
-    implements(IBrokenPagesView)
+
     server_url = None
 
     def __init__(self, context, request):
@@ -77,22 +80,22 @@ class BrokenPagesView(BrowserView):
         registry = getUtility(IRegistry)
         settings = registry.forInterface(ILichesSettingsSchema)
         self.server_url = settings.liches_server
+        if not self.server_url.endswith('/'):
+            self.server_url += '/'
         self.invalid_only = int(settings.invalid_only)
 
     def get_links(self):
-        query = urllib.urlencode({"url": self.context.absolute_url(),
-                "code": self.request.form.get('code', ''),
-                "invalid": self.invalid_only,
-                "format": "json"})
-        if self.server_url.endswith('/'):
-            service_url = "%sgetpages?%s" %(self.server_url, query)
-        else:
-            service_url = "%s/getpages?%s" %(self.server_url, query)
         try:
-            data = json.load(urllib2.urlopen(service_url))
-        except urllib2.HTTPError:
-            return {'num': 'unknown', 'name': 'Error connecting to linkchecker server', 'urls': []}
+            resp = requests.get(
+                self.server_url + '@urls',
+                auth=('root', 'root'),
+                headers={'Accept': 'application/json'}
+            )
+            data = resp.json()
+        except ValueError:   # XXX Find out about correct exceptions here
+            data = {'num': 'unknown', 'name': 'Error connecting to linkchecker server', 'urls': []}
         return data
+
 
 class BrokenLinksView(BrowserView):
 
@@ -146,6 +149,7 @@ class BrokenLinksView(BrowserView):
     def __call__(self):
         self.request.response.setHeader('X-Theme-Disabled', 'True')
         return self.template()
+
 
 class LinkCheckPageView(BrowserView):
 

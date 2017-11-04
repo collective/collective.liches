@@ -28,6 +28,8 @@ setup(name='collective.liches',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'plone.api',
+          'requests'
           # -*- Extra requirements: -*-
       ],
       extras_require={

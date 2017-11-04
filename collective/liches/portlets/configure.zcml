@@ -26,7 +26,7 @@
         name="liches-ajax-portlet.html"
         class=".views.BrokenPagesView"
         template="ajaxview.pt"
-        allowed_interface=".views.IBrokenPagesView"
+        allowed_interface="..browser.views.IBrokenPagesView"
         permission="cmf.ModifyPortalContent"
         layer="collective.liches.interfaces.ILichesLayer"
         />

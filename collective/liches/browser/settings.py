@@ -7,10 +7,11 @@ from Products.statusmessages.interfaces import IStatusMessage
 from collective.liches import lichesMessageFactory as _
 from collective.liches.interfaces import ILichesSettingsSchema
 
+
 class LichesSettings(controlpanel.RegistryEditForm):
     schema = ILichesSettingsSchema
     label = _(u'Liches Settings')
-    description = _(u'Configure the access to you Link CHecher Server')
+    description = _(u'Configure the access to you Link Checker Server')
 
     @button.buttonAndHandler(_('Save'), name='save')
     def handleSave(self, action):
@@ -36,6 +37,7 @@ class LichesSettings(controlpanel.RegistryEditForm):
     def actionBrokenPages(self, action):
         next_url = self.context.absolute_url() + '/@@linkchecker-brokenpages.html'
         self.request.response.redirect(next_url)
+
 
 class LichesSettingsSchemaControlPanel(controlpanel.ControlPanelFormWrapper):
     form = LichesSettings
