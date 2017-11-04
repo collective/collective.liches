@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.2'
+version = '2.0.dev0'
 
 setup(name='collective.liches',
       version=version,
@@ -14,8 +14,7 @@ setup(name='collective.liches',
         "Framework :: Plone",
         "Programming Language :: Python",
         "Topic :: Internet :: WWW/HTTP :: Site Management :: Link Checking",
-        "Framework :: Plone :: 4.2",
-        "Framework :: Plone :: 4.1",
+        "Framework :: Plone :: 5.1",
         "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
         ],
       keywords='',
@@ -31,12 +30,16 @@ setup(name='collective.liches',
           'setuptools',
           # -*- Extra requirements: -*-
       ],
+      extras_require={
+        'test': [
+            'plone.app.testing[robot]',
+            'plone.app.robotframework',
+        ]
+      },
       entry_points="""
       # -*- Entry points: -*-
 
       [z3c.autoinclude.plugin]
       target = plone
       """,
-      #setup_requires=["PasteScript"],
-      #paster_plugins=["ZopeSkel"],
       )
